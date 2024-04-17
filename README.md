@@ -2,7 +2,7 @@
 Este é um código que serve para criar um triângulo e calcular sua área através de classes. O código foi construído respeitando os princípios SOLID: Princípio da Responsabilidade Única e Princípio de Inversão de Dependências e os princípios: Prefira Composição a Herança e Princípio de Demeter.
 
 ## Princípios da Responsabilidade Única
-As classes `Base`, `Altura`, `Lado` e `Triangulo` possuem apenas uma funcionalidade, suas funções são respectivamente: 
+As classes `Base`, `Altura`, `Lado` e `Triangulo` possuem apenas uma funcionalidade, seus papéis são respectivamente: 
 - Guardar o valor da medida da base de um triângulo;
 ```c++
 class Base{
