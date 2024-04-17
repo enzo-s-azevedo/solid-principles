@@ -14,7 +14,7 @@ class Base{
         }
         ~Base(){}
         int getMedida(){return this->medida;}
-};
+};```
 
 - Guardar o valor da medida da altura de um triângulo;
 ```c++
@@ -27,7 +27,7 @@ class Altura{
         }
         ~Altura(){}
         int getMedida(){return this->medida;}
-};
+};```
 
 - Guardar o valor da medida do lado de um triângulo;
 ```c++
@@ -40,7 +40,7 @@ class Lado{
         }
         ~Lado(){}
         int getMedida(){return this->medida;}
-};
+};```
 
 calcular a área de um triângulo;
 ```c++
@@ -64,7 +64,7 @@ class Triangulo{
         int area(){
             this->area = base.getMedida() * altura.getMedida()/2;
         }
-};
+};```
 
 ## Princípio de Inversão de Dependências
 Este princípio prioriza interfaces a classes, então como `Triangulo` atende a todos os tipos de triângulo (contém todas as informações presentes em um triângulo), caso seja necessário implementar outro tipo de triângulo a implementação de `Triangulo` permanecerá válida.
@@ -76,7 +76,7 @@ class Triangulo{
         Lado ladoA;
         Lado ladoB;
         Lado ladoC;
-        int area;
+        int area;```
 
 ## Prefira Composição a Herança
 Como `Base`, `Lado` e `Altura` fazem parte de `Triangulo` (composições), nesse código foi optado utilizar composição em vez de herança. Abaixo há um trecho do código em que é possível visualizar que a classe `Triangulo` é composta por outras classes.
@@ -88,7 +88,7 @@ class Triangulo{
         Lado ladoA;
         Lado ladoB;
         Lado ladoC;
-        int area;
+        int area;```
 
 ## Princípio de Demeter
 No código os métodos apenas invocam os atributos da sua própria classe.
@@ -98,5 +98,5 @@ int getMedida(){return this->medida;}
 
 int area(){
     this->area = base.getMedida() * altura.getMedida()/2;
-        }
+        }```
    
