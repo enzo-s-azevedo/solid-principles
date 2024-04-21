@@ -54,7 +54,4 @@ class Triangulo{
             this->ladoC = _ladoC;
         }
         ~Triangulo (){}
-        int area(){
-            this->area = base.getMedida() * altura.getMedida()/2;
-        }
 };
