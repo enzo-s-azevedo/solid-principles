@@ -29,7 +29,7 @@ class Lado{
     private:
         int medida;
     public:
-        Lado (int _medida){
+        Lado(int _medida){
             this->medida = _medida;
         }
         ~Lado(){}
@@ -39,19 +39,44 @@ class Lado{
 
 class Triangulo{
     private:
-        Base base;
-        Altura altura;
-        Lado ladoA;
-        Lado ladoB;
-        Lado ladoC;
-        int area;
+        Base base = 0;
+        Altura altura = 0;
+        Lado ladoA = 0;
+        Lado ladoB = 0;
+        Lado ladoC = 0;
+        int area = 0;
     public:
-        Triangulo (Base _base, Altura _altura, Lado _ladoA, Lado _ladoB, Lado _ladoC) : base(0), altura(0), ladoA(0), ladoB(0), ladoC(0){
-            this->base = _base;
-            this->altura = _altura;
-            this->ladoA = _ladoA;
-            this->ladoB = _ladoB;
-            this->ladoC = _ladoC;
-        }
+        Triangulo () {}
         ~Triangulo (){}
+
+        void construirBase(Base b){
+            this->base = b;
+        }
+
+        void construirAltura(Altura h){
+            this->altura = h;
+        }
+
+        void construirLados(Lado a, Lado b, Lado c){
+            this->ladoA = ladoA;
+            this->ladoB = ladoB;
+            this->ladoC = ladoC;
+        }
+        
+        int getBaseTriangulo(){
+            return this->base.getMedida();
+        }
+        
+        int getAlturaTriangulo(){
+            return this->altura.getMedida();
+        }
+
+        void calcularArea(){
+            this->area = this->getAlturaTriangulo() * this->getBaseTriangulo() / 2;
+        }
+
+        void imprimirArea(){
+            cout << "Área = " << this->area << endl;
+        }
+        
 };
