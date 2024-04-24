@@ -1,74 +1,115 @@
 # Princípios SOLID
-Este é um código que serve para construir um triângulo através de classes. O código foi construído respeitando os princípios SOLID: Princípio da Responsabilidade Única e Princípio de Inversão de Dependências e os princípios: Prefira Composição a Herança e Princípio de Demeter.
+Este é um código que serve para construir um triângulo através de classes. O código foi construído respeitando os princípios: Princípio da Responsabilidade Única, Princípio Aberto/Fechado, Prefira Composição a Herança e Princípio de Demeter.
 
 ## Princípio da Responsabilidade Única
-Esse princípio evita que as classes possuam múltiplas responsabilidades, portanto as classes `Base`, `Altura`, `Lado` e `Triangulo` possuem apenas uma funcionalidade, seus papéis são respectivamente: 
-- Guardar o valor da medida da base de um triângulo;
+Esse princípio evita que as classes possuam múltiplas responsabilidades, portanto as classes `Base`, `Altura`, `Lado` e `Triangulo` possuem métodos com apenas uma funcionalidade, seus papéis são respectivamente:
+ 
+- Retornar o valor da medida de uma base;
 ```c++
 class Base{
-    private:
-        int medida;
-    public:
-        Base (int _medida){
-            this->medida = _medida;
-        }
-        ~Base(){}
+    [...]
         int getMedida(){return this->medida;}
 };
 ```
 
-- Guardar o valor da medida da altura de um triângulo;
+- Retornar o valor da medida de uma altura;
 ```c++
 class Altura{
-    private:
-        int medida;
-    public:
-        Altura (int _medida){
-            this->medida= _medida;
-        }
-        ~Altura(){}
+    [...]
         int getMedida(){return this->medida;}
 };
 ```
 
-- Guardar o valor da medida do lado de um triângulo;
+- Retornar o valor da medida de um lado;
 ```c++
 class Lado{
-    private:
-        int medida;
-    public:
-        Lado (int _medida){
-            this->medida = _medida;
-        }
-        ~Lado(){}
+    [...]
         int getMedida(){return this->medida;}
 };
 ```
 
-- Construir um triângulo;
+- Construir a base de um triângulo;
 ```c++
 class Triangulo{
-    private:
-        Base base;
-        Altura altura;
-        Lado ladoA;
-        Lado ladoB;
-        Lado ladoC;
-        int area;
-    public:
-        Triangulo (Base _base, Altura _altura, Lado _ladoA, Lado _ladoB, Lado _ladoC) : base(0), altura(0), ladoA(0), ladoB(0), ladoC(0){
-            this->base = _base;
-            this->altura = _altura;
-            this->ladoA = _ladoA;
-            this->ladoB = _ladoB;
-            this->ladoC = _ladoC;
+    [...]
+            void construirBase(Base b){
+            this->base = b;
         }
-        ~Triangulo (){}
+};
+```
+- Construir a altura de um triângulo;
+```c++
+class Triangulo{
+    [...]
+            void construirAltura(Altura h){
+            this->altura = h;
+        }
 };
 ```
 
-## Princípio de Inversão de Dependências
-Este princípio prioriza interfaces a classes, então como `Triangulo` atende a todos os tipos de triângulo (`private` contém todas as informações presentes em qualquer triângulo, ou seja, é uma abstração de triângulo), caso seja necessário implementar outro tipo de triângulo a implementação de `Triangulo` permanecerá válida.
+- Construir os lados de um triângulo;
+```c++
+class Triangulo{
+    [...]
+        void construirLados(Lado a, Lado b, Lado c){
+            this->ladoA = ladoA;
+            this->ladoB = ladoB;
+            this->ladoC = ladoC;
+        }
+};
+```
+
+- Retornar a base do triângulo;
+```c++
+class Triangulo{
+    [...]
+        int getBaseTriangulo(){
+            return this->base.getMedida();
+        }
+};
+```
+
+- Retornar a altura do triângulo;
+```c++
+class Triangulo{
+    [...]
+        int getAlturaTriangulo(){
+            return this->altura.getMedida();
+        }
+};
+```
+- Calcular a área do triângulo;
+```c++
+class Triangulo{
+    [...]
+        void calcularArea(){
+            this->area = this->getAlturaTriangulo() * this->getBaseTriangulo() / 2;
+        }
+};
+```
+- Imprimir a área do triângulo;
+```c++
+class Triangulo{
+    [...]
+        void imprimirArea(){
+            cout << "Área = " << this->area << endl;
+        }
+};
+```
+
+Isso resolve o problema do código errôneo, em que o método `calcularÁrea()` possuia duas funções: calcular e imprimir a área do triângulo.
+```c++
+class Triangulo{
+    [...]
+        void calcularArea(){
+            this->area = this->Base::getMedida() * this->Altura::getMedida()/2;
+            cout << "Área = " << this->area << endl;
+        }
+```
+
+
+## Princípio Aberto/Fechado
+Este princípio afirma que classes devem estar abertas para extensões e fechadas para modificações, nesse código a classe `Triangulo` respeita isso, já que pode ser extendida para qualquer tipo de triângulo, pois ela contém todos os atributos que um triângulo necessita.
 ```c++
 class Triangulo{
     private:
@@ -78,10 +119,20 @@ class Triangulo{
         Lado ladoB;
         Lado ladoC;
         int area;
+    [...]
+```
+Isso corrige o problema do código errôneo, no qual `Triangulo` só poderia ser utilizado para triângulos equiláteros, já que permite a atribuição de valor para apenas um lado.
+```c++
+class Triangulo : public Lado, public Base, public Altura{
+    private:
+        int area = 0;
+    public:
+        Triangulo(int medidaBase = 0, int medidaLado = 0, int medidaAltura = 0) : Base(medidaBase), Altura(medidaAltura), Lado(medidaLado), area(0) {}
+    [...]
 ```
 
 ## Prefira Composição a Herança
-Sabendo que herança tende a introduzir problemas na manutenção e evolução das classes de um sistema, esse código optou por `Triangulo` utilizar instâncias das classes `Base`, `Lado` e `Altura`, assim se mantem a flexibilidade para adicionar ou remover funcionalidades.
+Esse código optou por `Triangulo` utilizar instâncias das classes `Base`, `Lado` e `Altura`.
 ```c++
 class Triangulo{
     private:
@@ -91,14 +142,42 @@ class Triangulo{
         Lado ladoB;
         Lado ladoC;
         int area;
+    [...]
+```
+Como herança tende a introduzir problemas na manutenção e evolução das classes de um sistema, esse código corrige o problema de usar herança de forma errônea, já que `Triangulo` não respeita o "é-um" `Base`, `Lado` e `Altura` , e sim "tem-um".
+```c++
+class Triangulo : public Lado, public Base, public Altura{
+    private:
+        int area = 0;
+    public:
+        Triangulo(int medidaBase = 0, int medidaLado = 0, int medidaAltura = 0) : Base(medidaBase), Altura(medidaAltura), Lado(medidaLado), area(0) {}
+    [...]
 ```
 
 ## Princípio de Demeter
-Para não ter que quebrar o encapsulamento dos objetos quando uma classe exigir alterações, no código os métodos apenas invocam os atributos da sua própria classe.
+Para respeitar o princípio de Demeter esse código optou por utilizar apenas acessos de métodos da sua própria classes.
 ```c++
-int getMedida(){return this->medida;}
-```
+        int getBaseTriangulo(){
+            return this->base.getMedida();
+        }
+        
+        int getAlturaTriangulo(){
+            return this->altura.getMedida();
+        }
 
+        void calcularArea(){
+            this->area = this->getAlturaTriangulo() * this->getBaseTriangulo() / 2;
+        }
+        [...]
+```
+Para isso, os métodos `getBaseTriangulo()` e `getAlturaTriangulo()` foram criados a fim de corrigir o problema de ter que acessar métodos de outras classes quando se cálcula a área do triângulo.
+```c++
+        void calcularArea(){
+            this->area = this->Base::getMedida() * this->Altura::getMedida()/2;
+            cout << "Área = " << this->area << endl;
+        }        
+        [...]
+```
 
 ### Referências:
 Engenharia de Software Moderna - Marco Tulio Valente
